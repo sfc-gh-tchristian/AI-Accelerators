@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 import numpy as np
 from datetime import datetime, timedelta
-from snowflake.snowpark import Session
+from snowflake.snowpark.context import get_active_session
 from snowflake.cortex import complete, summarize
 import json
 from snowflake.core import Root
@@ -20,15 +20,17 @@ st.set_page_config(
 with open('style.css') as f:
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
+###########
+# USE THIS SECTION TO SWAP FOR YOUR DATA / PREFERENCES
+###########
 
-# Initialize session state
 if 'config' not in st.session_state:
     st.session_state.config = {
         'data_source': 'AI_SOL.SUPPORT.RAW_SUPPORT_TICKETS',
         'search_service': 'AI_SOL.SUPPORT.SUPPORT_SEARCH',
         'ai_model': 'claude-4-sonnet',
         'anomaly_threshold': 2.0,
-        'date_range_days': 90  
+        'date_range_days': 90 
     }
 
 if 'tickets_data' not in st.session_state:
@@ -46,19 +48,9 @@ if 'ai_date_range' not in st.session_state:
         datetime.now().date()
     )
 
-# Snowflake Connection
-@st.cache_resource
-def get_snowflake_session():
-    """Initialize Snowflake session"""
-    try:
-        # Try to get active session first (if running in Snowflake)
-        session = Session.builder.create()
-        return session
-    except Exception as e:
-        st.error(f"Failed to connect to Snowflake: {str(e)}")
-        return None
+session = get_active_session()
 
-# Configuration Section
+# Configuration Section / Sidebar
 def render_config_section():
     """Configuration panel for flexibility"""
     st.sidebar.header("⚙️ Configuration")
@@ -69,14 +61,14 @@ def render_config_section():
             min_value=7,
             max_value=180,  
             value=90,       
-            help="Number of days to analyze for Overview tab"
+            help="Number of days to analyse for Overview tab"
         )
     
     with st.sidebar.expander("🤖 AI Configuration", expanded=True):
         ai_model = st.selectbox(
             "Cortex AI Model",
-            ["claude-4-sonnet", "claude-3-7-sonnet", "openai-gpt-4.1", "mistral-large2","llama3.1-70b"],
-            help="Choose the AI model for analysis"
+            ["claude-4-sonnet", "claude-3-7-sonnet", "openai-gpt-4.1", "mistral-large2"],
+            help="Choose the AI model for analysis."
         )
         
         anomaly_threshold = st.slider(
@@ -88,8 +80,6 @@ def render_config_section():
             help="Lower values = more sensitive to anomalies"
         )
     
-    
-    # Save configuration (without data_source - that's now in top config)
     st.session_state.config.update({
         'ai_model': ai_model,
         'anomaly_threshold': anomaly_threshold,
@@ -103,58 +93,24 @@ def render_config_section():
         st.sidebar.success("✅ Snowflake Connected")
         st.sidebar.info("🤖 Cortex AI Ready")
     else:
-        st.sidebar.error("❌ Snowflake Disconnected")
+        st.sidebar.error("❌ Error in configuation")
 
 
 # Data Loading Functions
 @st.cache_data(ttl=300)  # Cache for 5 minutes
 def load_support_tickets(_session, table_name, days_back=30):
-    """Load support tickets from Snowflake table"""
+    """Load support tickets from Snowflake table with date filtering"""
     try:
-        # First, get the column names from the table
-        columns_query = f"SELECT * FROM {table_name} LIMIT 0"
-        columns_df = _session.sql(columns_query).to_pandas()
-        available_columns = columns_df.columns.tolist()
-        
-        # Determine date column to use
-        date_column = None
-        for col in ['SUBMIT_DATE', 'CREATED_DATE', 'TICKET_DATE', 'DATE']:
-            if col in available_columns:
-                date_column = col
-                break
-                
-        if not date_column:
-            raise ValueError("No suitable date column found in the table")
-        
         # Calculate date filter
         end_date = datetime.now().date()
         start_date = end_date - timedelta(days=days_back)
         
-        # Build dynamic column list based on what's available
-        select_columns = []
-        for col in ['TICKET_ID', date_column, 'CUSTOMER_ID', 'CUSTOMER_TIER', 
-                   'CHANNEL', 'PRIORITY', 'STATUS', 'PRODUCT_AREA', 
-                   'CLASSIFICATION', 'SENTIMENT', 'FIRST_RESPONSE_TIME_HOURS',
-                   'RESOLUTION_TIME_HOURS', 'TICKET_SUBJECT', 
-                   'TICKET_DESCRIPTION', 'AGENT_NOTES']:
-            if col in available_columns:
-                select_columns.append(col)
-        
         # Query the table
-        query = f"""
-        SELECT {', '.join(select_columns)}
-        FROM {table_name}
-        WHERE {date_column} >= '{start_date}'
-        ORDER BY {date_column} DESC
-        """
+        df = _session.table(table_name).filter(
+            f"SUBMIT_DATE >= '{start_date}' AND SUBMIT_DATE <= '{end_date}'"
+        ).to_pandas()
         
-        df = _session.sql(query).to_pandas()
-        
-        # Rename date column to SUBMIT_DATE if it's different
-        if date_column != 'SUBMIT_DATE':
-            df['SUBMIT_DATE'] = df[date_column]
-        
-        # Convert timestamp columns
+        # Convert timestamp column
         df['SUBMIT_DATE'] = pd.to_datetime(df['SUBMIT_DATE'])
         
         return df
@@ -163,6 +119,7 @@ def load_support_tickets(_session, table_name, days_back=30):
         st.error(f"Error loading data from {table_name}: {str(e)}")
         return pd.DataFrame()
 
+# Calculate anomalies in the data (for summary tab)
 def detect_anomalies(df, threshold=2.0):
     """Detect anomalies in ticket volume and patterns using statistical analysis"""
     if df.empty:
@@ -171,7 +128,7 @@ def detect_anomalies(df, threshold=2.0):
     # Daily ticket counts
     daily_counts = df.groupby(df['SUBMIT_DATE'].dt.date).size()
     
-    if len(daily_counts) < 3:  # Need at least 3 days for meaningful analysis
+    if len(daily_counts) < 3: 
         return {'volume_anomalies': pd.Series(dtype=float), 'category_anomalies': {}, 'z_scores': pd.Series(dtype=float)}
     
     # Calculate z-scores for anomaly detection
@@ -203,7 +160,8 @@ def detect_anomalies(df, threshold=2.0):
         'z_scores': z_scores
     }
 
-def run_cortex_analysis(_session, df, model="claude-3-sonnet"):
+#AI Insights Tab
+def run_cortex_analysis(_session, df, model="claude-4-sonnet"):
     """Run Cortex AI analysis on ticket data"""
     insights = []
     
@@ -215,7 +173,8 @@ def run_cortex_analysis(_session, df, model="claude-3-sonnet"):
         
         daily_avg = df.groupby(df['SUBMIT_DATE'].dt.date).size().mean()
         
-        # Sentiment analysis using real data
+        # Sentiment analysis : This assumes sentiment has been pre-computed
+        # Refer to the notebook if you're interested in using Cortex for that.
         negative_pct = (df['SENTIMENT'] == 'Negative').sum() / total_tickets * 100
         if negative_pct > 40:
             insights.append({
@@ -302,7 +261,7 @@ def run_cortex_analysis(_session, df, model="claude-3-sonnet"):
 def main():
     # Initialize Snowflake connection
     if st.session_state.snowflake_session is None:
-        st.session_state.snowflake_session = get_snowflake_session()
+        st.session_state.snowflake_session = session
     
     # Configuration sidebar
     render_config_section()
@@ -342,16 +301,16 @@ def main():
         st.stop()
     
     # Main tab structure
-    tab1, tab2, tab3, tab4 = st.tabs(["📊 Overview", "🤖 AI Insights", "🔍 Pattern Analysis", "🔎 Case Search"])
+    tab1, tab2, tab3, tab4 = st.tabs(["📊 Overview", "🔍 Pattern Analysis", "🤖 AI Insights",  "🔎 Case Search"])
     
     with tab1:
         render_overview_tab(df)
     
     with tab2:
-        render_ai_insights_tab(df)
+        render_pattern_analysis_tab(df)        
     
     with tab3:
-        render_pattern_analysis_tab(df)
+        render_ai_insights_tab(df)
     
     with tab4:
         render_case_search_tab()
@@ -624,11 +583,13 @@ def render_pattern_analysis_tab(df):
         daily_sentiment = df.groupby([df['SUBMIT_DATE'].dt.date, 'SENTIMENT']).size().unstack(fill_value=0)
         
         fig_sentiment_trend = px.line(
-            x=daily_sentiment.index,
-            y=[daily_sentiment[col] for col in daily_sentiment.columns],
-            title='Daily Sentiment Trends Over Time'
+            daily_sentiment
         )
-        fig_sentiment_trend.update_layout(height=350)
+        fig_sentiment_trend.update_layout(
+        height=350,
+        xaxis_title="Date",
+        yaxis_title="Number of Tickets"
+    )
         st.plotly_chart(fig_sentiment_trend, use_container_width=True)
     else:
         st.info("Sentiment data not available")
@@ -792,8 +753,6 @@ def render_case_search_tab():
 
 def render_main_dashboard(df, anomalies):
     """Main dashboard with key metrics and visualizations"""
-    st.subheader("📊 Performance Overview")
-    
     # Key metrics row
     col1, col2, col3, col4 = st.columns(4)
     
@@ -845,6 +804,21 @@ def render_main_dashboard(df, anomalies):
     
     fig_volume.update_layout(height=400, showlegend=True)
     st.plotly_chart(fig_volume, use_container_width=True)
+
+    p_describe_chart= """
+    Using the information below, describe this support ticket data in fewer than 50 words. 
+    Highlight the most important key trend as well as points of interest. 
+    Follow up with two questions you might want to consider asking with the points of interest in mind to get to the next level of insight."
+    """
+    chart_analysis = complete(st.session_state.config['ai_model'], (p_describe_chart+daily_volume.to_string()))
+    with st.container():
+        st.markdown(f"""
+        <div class="insight-card">
+                <h4>✨ Cortex AI Analysis from {st.session_state.config['ai_model']}</h4>
+                <p><strong>Analysis:</strong> {chart_analysis}</p>
+            </div>
+            """, unsafe_allow_html=True)
+
     
     # Category and sentiment analysis
     col1, col2 = st.columns(2)
