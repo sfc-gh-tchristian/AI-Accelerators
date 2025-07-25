@@ -1,0 +1,266 @@
+/* Modern navigation bar styling */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.stTabs [data-baseweb="tab"] {
+    background-color: transparent;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    color: #495057;
+}
+
+.stTabs [data-baseweb="tab"]:hover {
+    background-color: #e9ecef;
+    color: #343a40;
+    transform: translateY(-1px);
+}
+
+.stTabs [aria-selected="true"] {
+    background-color: #0066cc !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(0,102,204,0.3);
+}
+
+/* Header styling */
+.main-header {
+    text-align: center;
+    padding: 1rem 0 2rem 0;
+    border-bottom: 2px solid #e9ecef;
+    margin-bottom: 2rem;
+}
+
+.main-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 0.5rem;
+}
+
+.main-subtitle {
+    font-size: 1.1rem;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+/* Tab content styling */
+.stTabs [data-baseweb="tab-panel"] {
+    padding: 0;
+}
+
+/* Metrics styling */
+.metric-container {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 10px;
+    padding: 1rem;
+    color: white;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+/* Clean metric cards with subtle styling */
+.metric-card {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border-left: 4px solid #0066cc;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    margin: 0.5rem 0;
+    text-align: center;
+}
+
+.metric-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0066cc;
+    margin: 0;
+}
+
+.metric-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* Priority alert - single, focused design */
+.priority-alert {
+    background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border-left: 4px solid #ffc107;
+    margin: 1rem 0;
+    box-shadow: 0 2px 8px rgba(255,193,7,0.2);
+}
+
+.priority-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #856404;
+    margin-bottom: 0.5rem;
+}
+
+.priority-content {
+    color: #664d03;
+    font-size: 0.95rem;
+}
+
+/* AI insights section */
+.ai-insight {
+    background: linear-gradient(135deg, #e3f2fd 0%, #f3f4f6 100%);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border-left: 4px solid #1976d2;
+    margin: 1rem 0;
+    box-shadow: 0 2px 8px rgba(25,118,210,0.1);
+}
+
+.insight-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.insight-icon {
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+}
+
+.insight-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1565c0;
+    margin: 0;
+}
+
+.insight-text {
+    color: #0d47a1;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* Section headers */
+.section-header {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #343a40;
+    margin: 2rem 0 1rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+/* Question cards styling */
+.question-card {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    border-left: 4px solid #0066cc;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease;
+}
+
+.question-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.question-text {
+    color: #495057;
+    font-size: 0.9rem;
+    margin: 0;
+    font-style: italic;
+}
+
+.question-icon {
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+}
+
+/* AI response cards */
+.ai-response-card {
+    background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border-left: 4px solid #28a745;
+    margin: 1rem 0;
+    box-shadow: 0 2px 8px rgba(40,167,69,0.1);
+}
+
+.ai-response-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.ai-response-icon {
+    font-size: 1.3rem;
+    margin-right: 0.5rem;
+}
+
+.ai-response-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #155724;
+    margin: 0;
+}
+
+.ai-response-text {
+    color: #155724;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Activities section */
+.activities-section {
+    background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border-left: 4px solid #ffc107;
+    margin: 1rem 0;
+    box-shadow: 0 2px 8px rgba(255,193,7,0.1);
+}
+
+.activities-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.activities-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #856404;
+    margin: 0;
+}
+
+.activity-item {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    border: 1px solid #f8d7da;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.activity-header {
+    font-weight: 600;
+    color: #721c24;
+    margin-bottom: 0.5rem;
+}
+
+.activity-detail {
+    color: #495057;
+    font-size: 0.9rem;
+    margin: 0.25rem 0;
+} 
