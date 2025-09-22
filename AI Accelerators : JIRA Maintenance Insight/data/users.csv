@@ -1,0 +1,41 @@
+ID,DISPLAY_NAME,ROLE,TEAM,LOCATION,EMAIL
+USR-1000,Nils Martin,Operator,Compliance,DE,nils.martin@example.com
+USR-1001,Emma Fischer,Maintenance,Compliance,FR,emma.fischer@example.com
+USR-1002,Marie Novak,Operator,Line Ops,DE,marie.novak@example.com
+USR-1003,Sophie Dubois,Analyst,Quality,IE,sophie.dubois@example.com
+USR-1004,Charlotte Kowalski,Compliance,Engineering,SE,charlotte.kowalski@example.com
+USR-1005,James Müller,Engineer,Compliance,UK,james.müller@example.com
+USR-1006,Lars Fischer,Operator,Quality,IE,lars.fischer@example.com
+USR-1007,Marie Lemaire,Operator,Line Ops,IE,marie.lemaire@example.com
+USR-1008,Oliver Müller,Analyst,Maintenance,IE,oliver.müller@example.com
+USR-1009,James Kowalski,Maintenance,Line Ops,SE,james.kowalski@example.com
+USR-1010,Emma Novak,Operator,Quality,UK,emma.novak@example.com
+USR-1011,Nils Dubois,Operator,Compliance,UK,nils.dubois@example.com
+USR-1012,James Schneider,Compliance,Maintenance,NL,james.schneider@example.com
+USR-1013,James Müller,Operator,Compliance,NL,james.müller@example.com
+USR-1014,Nils Becker,Compliance,Line Ops,SE,nils.becker@example.com
+USR-1015,James Schneider,Maintenance,Maintenance,DE,james.schneider@example.com
+USR-1016,Oliver Fischer,Operator,Line Ops,IE,oliver.fischer@example.com
+USR-1017,Lucas Fischer,Operator,Line Ops,NL,lucas.fischer@example.com
+USR-1018,Emma Becker,Maintenance,Maintenance,UK,emma.becker@example.com
+USR-1019,Amelie Brown,Maintenance,Compliance,NL,amelie.brown@example.com
+USR-1020,Sophie Müller,Analyst,Engineering,FR,sophie.müller@example.com
+USR-1021,Amelie Schneider,Operator,Quality,NL,amelie.schneider@example.com
+USR-1022,Emma Brown,Engineer,Compliance,FR,emma.brown@example.com
+USR-1023,Marie Müller,Operator,Maintenance,DE,marie.müller@example.com
+USR-1024,James Andersson,Operator,Maintenance,IE,james.andersson@example.com
+USR-1025,Oliver Andersson,Quality,Maintenance,SE,oliver.andersson@example.com
+USR-1026,Sophie Martin,Operator,Line Ops,NL,sophie.martin@example.com
+USR-1027,Sophie Novak,Compliance,Engineering,DE,sophie.novak@example.com
+USR-1028,Sophie Brown,Analyst,Quality,FR,sophie.brown@example.com
+USR-1029,James Dubois,Quality,Maintenance,DE,james.dubois@example.com
+USR-1030,Luca Becker,Quality,Compliance,DE,luca.becker@example.com
+USR-1031,Marie Müller,Operator,Engineering,IE,marie.müller@example.com
+USR-1032,Marie Martin,Operator,Quality,NL,marie.martin@example.com
+USR-1033,Lars Dubois,Maintenance,Engineering,NL,lars.dubois@example.com
+USR-1034,Amelie Müller,Engineer,Engineering,FR,amelie.müller@example.com
+USR-1035,Emma Brown,Maintenance,Maintenance,NL,emma.brown@example.com
+USR-1036,Oliver Becker,Maintenance,Maintenance,NL,oliver.becker@example.com
+USR-1037,Sophie Dubois,Analyst,Line Ops,FR,sophie.dubois@example.com
+USR-1038,Amelie Lemaire,Maintenance,Compliance,SE,amelie.lemaire@example.com
+USR-1039,James Novak,Engineer,Engineering,IE,james.novak@example.com
