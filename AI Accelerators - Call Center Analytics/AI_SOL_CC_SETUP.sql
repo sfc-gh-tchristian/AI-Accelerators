@@ -26,14 +26,33 @@ COPY FILES
   
 LS @AUDIO_FILES_STAGE;
 
+CREATE TABLE IF NOT EXISTS AI_SOL.CALL_CENTERS.TRANSCRIBED_AUDIO (
+    AUDIO_FILE VARIANT,
+    RAW_TRANSCRIPTION_RESULTS VARIANT
+);
+
+COPY INTO AI_SOL.CALL_CENTERS.TRANSCRIBED_AUDIO
+FROM @audio_files_stage
+FILE_FORMAT = (
+    TYPE = 'CSV'
+    FIELD_DELIMITER = '\t'
+    SKIP_HEADER = 0
+    FIELD_OPTIONALLY_ENCLOSED_BY = '"'
+    ESCAPE = NONE
+    ESCAPE_UNENCLOSED_FIELD = NONE
+    ENCODING = 'UTF8'
+    ERROR_ON_COLUMN_COUNT_MISMATCH = FALSE
+    TRIM_SPACE = FALSE
+);
+
 -- ============================================
 -- STEP 3: Create the notebook
 -- ============================================
 
+
 CREATE OR REPLACE NOTEBOOK AI_ACCELERATORS_CALL_CENTER_ANALYTICS
     FROM '@AI_SOL.PUBLIC.ACCELERATOR_REPO/branches/main/AI Accelerators - Call Center Analytics/' 
         MAIN_FILE = 'AI Accelerators _ Call Center Analytics.ipynb' 
-        QUERY_WAREHOUSE = TC_WH --replace with your warehouse :)
         COMPUTE_POOL = SYSTEM_COMPUTE_POOL_CPU --replace with CPU pool (if needed)
         RUNTIME_NAME = 'SYSTEM$BASIC_RUNTIME'
         ;
