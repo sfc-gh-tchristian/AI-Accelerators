@@ -57,6 +57,10 @@ Using AISQL to transform traditional CRM data into actionable sales intelligence
 
 ## Customer Support Analysis
 
+```sql
+EXECUTE IMMEDIATE FROM '@AI_SOL.PUBLIC.ACCELERATOR_REPO/branches/main/AI Accelerators : JIRA Maintenance Insight/AI_SOL_SUPPORT_SETUP.sql';
+```
+
 <img width="389" height="212" alt="image" src="https://github.com/user-attachments/assets/073d8e88-7a86-4106-ae48-fc709219a251" />
 
 Demonstrating how Cortex can be used for RCA, key emerging impacts, as well as related case insight.
