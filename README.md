@@ -34,12 +34,12 @@ EXECUTE IMMEDIATE FROM '@AI_SOL.PUBLIC.ACCELERATOR_REPO/branches/main/AI Acceler
 EXECUTE IMMEDIATE FROM '@AI_SOL.PUBLIC.ACCELERATOR_REPO/branches/main/AI Accelerators : JIRA Maintenance Insight/AI_SOL_JIRA_SETUP.sql';
 ```
 
-🔍 Root Cause Analysis: AI-driven pattern recognition to identify recurring problems and their sources
-⚡ Downtime Prevention: Predictive insights to prevent equipment failures before they occur
-🔧 Maintenance Optimization: Intelligent scheduling based on failure patterns and asset health
-📊 Compliance Monitoring: Automated tracking of safety and quality requirements
-🏆 Process Excellence: Identify best practices and replicate high-performing operations
-📈 Operational Efficiency: Real-time insights into production line performance and bottlenecks
+- 🔍 Root Cause Analysis: AI-driven pattern recognition to identify recurring problems and their sources
+- ⚡ Downtime Prevention: Predictive insights to prevent equipment failures before they occur
+- 🔧 Maintenance Optimization: Intelligent scheduling based on failure patterns and asset health
+- 📊 Compliance Monitoring: Automated tracking of safety and quality requirements
+- 🏆 Process Excellence: Identify best practices and replicate high-performing operations
+- 📈 Operational Efficiency: Real-time insights into production line performance and bottlenecks
 
 
 ## Sales Insight
